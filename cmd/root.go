@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/oracle/oci-go-sdk/common"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -23,7 +22,7 @@ applications in go using Cobra CLI library`,
 }
 
 // Execute ...
-func Execute(config common.ConfigurationProvider) {
+func Execute() {
 	//compartmentID := os.Getenv("TF_VAR_compartment_ocid")
 
 	if err := RootCmd.Execute(); err != nil {
@@ -39,7 +38,11 @@ func init() {
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
-	// RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cobra-example.yaml)")
+	RootCmd.PersistentFlags().String("tenant_ocid", viper.GetString("tenant_ocid"), "tenant ocid")
+	RootCmd.PersistentFlags().String("user_ocid", viper.GetString("user_ocid"), "user ocid")
+	RootCmd.PersistentFlags().String("compartment_ocid", viper.GetString("compartment_ocid"), "tenant ocid")
+	RootCmd.PersistentFlags().String("fingerprint", viper.GetString("fingerprint"), "tenant ocid")
+	RootCmd.PersistentFlags().String("region", viper.GetString("region"), "tenant ocid")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -48,12 +51,9 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	}
 
-	viper.AutomaticEnv() // read in environment variables that match
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
