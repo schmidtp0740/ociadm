@@ -9,6 +9,5 @@ func main() {
 	config := common.DefaultConfigProvider()
 
 	cmd.Execute(config)
-	// vcn := createVCN(config, cidrBlock, compartmentID, vcnDisplayName, dnsLabel)
-	// deleteVCN(config, vcn)
+
 }
