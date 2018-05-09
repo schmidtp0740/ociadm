@@ -33,13 +33,15 @@ func Execute() {
 }
 
 func init() {
-	//cobra.OnInitialize(initConfig)
+	// Executes every time command is run
+	// cobra.OnInitialize(initConfig)
+
 	viper.SetConfigName("config")
 	viper.AddConfigPath(".")
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Println(err)
 	}
 
 	// Here you will define your flags and configuration settings.
@@ -50,12 +52,14 @@ func init() {
 	RootCmd.PersistentFlags().String("compartment_ocid", viper.GetString("compartment_ocid"), "tenant ocid")
 	RootCmd.PersistentFlags().String("fingerprint", viper.GetString("fingerprint"), "tenant ocid")
 	RootCmd.PersistentFlags().String("region", viper.GetString("region"), "tenant ocid")
+	RootCmd.PersistentFlags().String("private_key_path", viper.GetString("private_key_path"), "private_key_path")
 
 	RootCmd.MarkFlagRequired("tenancy_ocid")
 	RootCmd.MarkFlagRequired("user_ocid")
 	RootCmd.MarkFlagRequired("compartment_ocid")
 	RootCmd.MarkFlagRequired("fingerprint")
 	RootCmd.MarkFlagRequired("region")
+	RootCmd.MarkFlagRequired("private_key_path")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -68,7 +72,7 @@ func initConfig() {
 	viper.AddConfigPath(".")
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Println(err)
 	}
 }
