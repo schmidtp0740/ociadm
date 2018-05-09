@@ -1,0 +1,8 @@
+{
+    "tenancy_ocid": "",
+    "user_ocid": "",
+    "compartment_ocid": "",
+    "fingerprint": "",
+    "region": "us-phoenix-1",
+    "private_key_path": "/home/user/.oci/apikey.pem"
+}
