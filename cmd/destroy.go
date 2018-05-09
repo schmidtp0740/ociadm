@@ -1,26 +1,15 @@
 package cmd
 
 import (
-	"context"
-
-	"github.com/oracle/oci-go-sdk/common"
-	"github.com/oracle/oci-go-sdk/core"
+	"github.com/spf13/cobra"
 )
 
-func destroyVCN(config common.ConfigurationProvider, vcn core.Vcn) core.DeleteVcnResponse {
-	client, err := core.NewVirtualNetworkClientWithConfigurationProvider(config)
-	if err != nil {
-		panic(err)
-	}
+var destroyCmd = &cobra.Command{
+	Use:   "destroy",
+	Short: "TODO",
+	Long:  "TODO",
+}
 
-	ctx := context.Background()
-
-	request := core.DeleteVcnRequest{}
-	request.VcnId = vcn.Id
-
-	resp, err := client.DeleteVcn(ctx, request)
-	if err != nil {
-		panic(err)
-	}
-	return resp
+func init() {
+	RootCmd.AddCommand(destroyCmd)
 }

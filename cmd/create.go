@@ -6,8 +6,8 @@ import (
 
 var createCmd = &cobra.Command{
 	Use:   "create",
-	Short: "create services(",
-	Long:  `This subcommand allows you to create services`,
+	Short: "TODO",
+	Long:  "TODO",
 }
 
 func init() {

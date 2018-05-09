@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/oracle/oci-go-sdk/common"
 	"github.com/oracle/oci-go-sdk/core"
@@ -12,13 +13,15 @@ var cidrBlock, name, dns string
 
 var createNetworkVCNCmd = &cobra.Command{
 	Use:   "vcn",
-	Short: "create services(",
-	Long:  `This subcommand allows you to create services`,
+	Short: "TODO",
+	Long:  "TODO",
 
 	Run: func(cmd *cobra.Command, args []string) {
 		compartmentOCID := RootCmd.PersistentFlags().Lookup("compartment_ocid").Value.String()
 
-		createVCN(compartmentOCID, cidrBlock, name, dns)
+		vcn := createVCN(compartmentOCID, cidrBlock, name, dns)
+
+		fmt.Println("created", vcn)
 	},
 }
 

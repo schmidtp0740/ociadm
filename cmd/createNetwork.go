@@ -6,8 +6,8 @@ import (
 
 var createNetworkCmd = &cobra.Command{
 	Use:   "network",
-	Short: "create network",
-	Long:  "blah blah",
+	Short: "TODO",
+	Long:  "TODO",
 }
 
 func init() {
