@@ -8,22 +8,52 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	bashCompletionFunc = `__oci_parse_get()
+{
+	local oci_output out
+	if oci_output=$(oci-dev get --no-headers "$1" 2>/dev/null); then
+		out=($(echo "${oci-dev_output}" | awk '{print $1}'))
+		COMPREPLY=( $( compgen -W "${out[*]}" -- "$curl" ))
+	fi
+}
+
+__oci_get_resource()
+{
+	if [[ ${#nouns[@]} -eq 0]]; then
+		return 1
+	fi
+	__oci_parse__get ${nouns{#nouns[@]} -1}
+	if [[ $? -eq 0 ]]' then
+		return 0
+	fi
+}
+
+__custom_func() {
+	case ${last_command} in
+		oci_get | oci_describe | oci_destroy )
+		__oci_get_resource
+		return
+		;;
+	*)
+		;;
+	esac
+}
+`
+)
+
 var cfgFile string
 
 // RootCmd ...
 var RootCmd = &cobra.Command{
-	Use:   "cobra-example",
-	Short: "An example of cobra",
-	Long: `This application shows how to create modern CLI 
-applications in go using Cobra CLI library`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	Use:   "oci",
+	Short: "TODO",
+	Long:  `TODO`,
+	BashCompletionFunction: bashCompletionFunc,
 }
 
 // Execute ...
 func Execute() {
-	//compartmentID := os.Getenv("TF_VAR_compartment_ocid")
 
 	if err := RootCmd.Execute(); err != nil {
 		fmt.Println(err)
