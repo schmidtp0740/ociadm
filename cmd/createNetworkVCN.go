@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cidrBlock, name, dns string
+var vcnCidrBlock, name, dns string
 
 var createNetworkVCNCmd = &cobra.Command{
 	Use:   "vcn",
@@ -19,21 +19,21 @@ var createNetworkVCNCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		compartmentOCID := RootCmd.PersistentFlags().Lookup("compartment_ocid").Value.String()
 
-		vcn := createVCN(compartmentOCID, cidrBlock, name, dns)
+		vcn := createVCN(compartmentOCID, vcnCidrBlock, name, dns)
 
 		fmt.Println("created", vcn)
 	},
 }
 
 func init() {
-	createNetworkVCNCmd.Flags().StringVarP(&cidrBlock, "cidr-block", "c", "10.0.0.0/16", "cidrBlock")
+	createNetworkVCNCmd.Flags().StringVarP(&vcnCidrBlock, "cidr-block", "c", "10.0.0.0/16", "vcnCidrBlock")
 	createNetworkVCNCmd.Flags().StringVarP(&name, "name", "n", "", "VCN Display Name")
 	createNetworkVCNCmd.Flags().StringVarP(&dns, "dns", "d", "dnsLabel", "dnsLabel")
 	createNetworkVCNCmd.MarkFlagRequired("name")
 	createNetworkCmd.AddCommand(createNetworkVCNCmd)
 }
 
-func createVCN(compartmentOCID, cidrBlock, name, dns string) core.Vcn {
+func createVCN(compartmentOCID, vcnCidrBlock, name, dns string) core.Vcn {
 	tenant := TenancyOCID()
 	user := UserOCID()
 	region := Region()
@@ -50,7 +50,7 @@ func createVCN(compartmentOCID, cidrBlock, name, dns string) core.Vcn {
 
 	request := core.CreateVcnRequest{}
 
-	request.CidrBlock = common.String(cidrBlock)
+	request.CidrBlock = common.String(vcnCidrBlock)
 	request.CompartmentId = common.String(compartmentOCID)
 	request.DisplayName = common.String(name)
 	request.DnsLabel = common.String(dns)
