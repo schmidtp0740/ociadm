@@ -17,9 +17,8 @@ var createNetworkVCNCmd = &cobra.Command{
 	Long:  "TODO",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		compartmentOCID := RootCmd.PersistentFlags().Lookup("compartment_ocid").Value.String()
 
-		vcn := createVCN(compartmentOCID, vcnCidrBlock, name, dns)
+		vcn := createVCN(ociDetails.compartmentID, vcnCidrBlock, name, dns)
 
 		fmt.Println("created", vcn)
 	},
@@ -34,11 +33,11 @@ func init() {
 }
 
 func createVCN(compartmentOCID, vcnCidrBlock, name, dns string) core.Vcn {
-	tenant := TenancyOCID()
-	user := UserOCID()
-	region := Region()
-	fingerprint := KeyFingerprint()
-	privateKey := PrivateKey()
+	tenant := ociDetails.getTenancyOCID()
+	user := ociDetails.getUserOCID()
+	region := ociDetails.getRegion()
+	fingerprint := ociDetails.getKeyFingerprint()
+	privateKey := ociDetails.getPrivateKey()
 	config := common.NewRawConfigurationProvider(tenant, user, region, fingerprint, privateKey, nil)
 
 	c, err := core.NewVirtualNetworkClientWithConfigurationProvider(config)

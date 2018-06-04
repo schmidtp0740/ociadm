@@ -4,35 +4,42 @@ import (
 	"io/ioutil"
 )
 
+type ociDetailStruct struct {
+	tenancyOCID    string
+	userOCID       string
+	compartmentID  string
+	fingerprint    string
+	region         string
+	privateKeyPath string
+}
+
+var ociDetails ociDetailStruct
+
 // TenancyOCID ...
-func TenancyOCID() string {
-	return RootCmd.PersistentFlags().Lookup("tenancy_ocid").Value.String()
+func (o *ociDetailStruct) getTenancyOCID() string {
+	return o.tenancyOCID
 }
 
 // UserOCID ...
-func UserOCID() string {
-	return RootCmd.PersistentFlags().Lookup("user_ocid").Value.String()
+func (o *ociDetailStruct) getUserOCID() string {
+	return o.userOCID
 }
 
 // KeyFingerprint ...
-func KeyFingerprint() string {
-	return RootCmd.PersistentFlags().Lookup("fingerprint").Value.String()
+func (o *ociDetailStruct) getKeyFingerprint() string {
+	return o.fingerprint
 }
 
 // Region ...
-func Region() string {
-	return RootCmd.PersistentFlags().Lookup("region").Value.String()
+func (o *ociDetailStruct) getRegion() string {
+	return o.region
 }
 
-// PrivateKey ...
-func PrivateKey() string {
-	privateKeyPath := RootCmd.PersistentFlags().Lookup("private_key_path").Value.String()
-	b, err := ioutil.ReadFile(privateKeyPath)
+func (o *ociDetailStruct) getPrivateKey() string {
+	b, err := ioutil.ReadFile(o.privateKeyPath)
 	if err != nil {
 		panic(err)
 	}
 
-	// block, _ := pem.Decode(privateKeyPath)
-	// key, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
 	return string(b)
 }

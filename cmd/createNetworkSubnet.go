@@ -9,7 +9,6 @@ import (
 
 var availabilityDomain,
 	subnetcidrBlock,
-	compartmentID,
 	dhcpOptionsID,
 	displayName,
 	dnsLabel,

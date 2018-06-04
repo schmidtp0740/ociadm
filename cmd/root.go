@@ -42,7 +42,7 @@ __custom_func() {
 `
 )
 
-var cfgFile string
+var cfgFile, compartmentID string
 
 // RootCmd ...
 var RootCmd = &cobra.Command{
@@ -77,12 +77,12 @@ func init() {
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
-	RootCmd.PersistentFlags().String("tenancy_ocid", viper.GetString("tenancy_ocid"), "tenant ocid")
-	RootCmd.PersistentFlags().String("user_ocid", viper.GetString("user_ocid"), "user ocid")
-	RootCmd.PersistentFlags().String("compartment_ocid", viper.GetString("compartment_ocid"), "tenant ocid")
-	RootCmd.PersistentFlags().String("fingerprint", viper.GetString("fingerprint"), "tenant ocid")
-	RootCmd.PersistentFlags().String("region", viper.GetString("region"), "tenant ocid")
-	RootCmd.PersistentFlags().String("private_key_path", viper.GetString("private_key_path"), "private_key_path")
+	RootCmd.PersistentFlags().StringVar(&ociDetails.tenancyOCID, "tenancy_ocid", viper.GetString("tenancy_ocid"), "tenant ocid")
+	RootCmd.PersistentFlags().StringVar(&ociDetails.userOCID, "user_ocid", viper.GetString("user_ocid"), "user ocid")
+	RootCmd.PersistentFlags().StringVar(&ociDetails.compartmentID, "compartment_ocid", viper.GetString("compartment_ocid"), "tenant ocid")
+	RootCmd.PersistentFlags().StringVar(&ociDetails.fingerprint, "fingerprint", viper.GetString("fingerprint"), "tenant ocid")
+	RootCmd.PersistentFlags().StringVar(&ociDetails.region, "region", viper.GetString("region"), "tenant ocid")
+	RootCmd.PersistentFlags().StringVar(&ociDetails.privateKeyPath, "private_key_path", viper.GetString("private_key_path"), "private_key_path")
 
 	RootCmd.MarkFlagRequired("tenancy_ocid")
 	RootCmd.MarkFlagRequired("user_ocid")
