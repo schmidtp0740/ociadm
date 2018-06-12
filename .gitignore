@@ -18,3 +18,5 @@ debug
 config.json
 
 oci-dev
+
+*.code-workspace
