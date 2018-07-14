@@ -38,6 +38,7 @@ func createVCN(compartmentOCID, cidrBlock, name, dns string) core.Vcn {
 
 	c, err := core.NewVirtualNetworkClientWithConfigurationProvider(config)
 	if err != nil {
+		fmt.Print("Error: ")
 		panic(err)
 	}
 
@@ -52,6 +53,7 @@ func createVCN(compartmentOCID, cidrBlock, name, dns string) core.Vcn {
 
 	r, err := c.CreateVcn(ctx, request)
 	if err != nil {
+		fmt.Println("error at create time")
 		panic(err)
 	}
 
