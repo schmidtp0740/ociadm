@@ -26,12 +26,7 @@ func init() {
 }
 
 func destroyVCN() core.DeleteVcnResponse {
-	tenant := TenancyOCID()
-	user := UserOCID()
-	region := Region()
-	fingerprint := KeyFingerprint()
-	privateKey := PrivateKey()
-	config := common.NewRawConfigurationProvider(tenant, user, region, fingerprint, privateKey, nil)
+	config := common.DefaultConfigProvider()
 
 	client, err := core.NewVirtualNetworkClientWithConfigurationProvider(config)
 	if err != nil {

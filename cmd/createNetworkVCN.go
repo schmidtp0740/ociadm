@@ -34,12 +34,7 @@ func init() {
 }
 
 func createVCN(compartmentOCID, cidrBlock, name, dns string) core.Vcn {
-	tenant := TenancyOCID()
-	user := UserOCID()
-	region := Region()
-	fingerprint := KeyFingerprint()
-	privateKey := PrivateKey()
-	config := common.NewRawConfigurationProvider(tenant, user, region, fingerprint, privateKey, nil)
+	config := common.DefaultConfigProvider()
 
 	c, err := core.NewVirtualNetworkClientWithConfigurationProvider(config)
 	if err != nil {
