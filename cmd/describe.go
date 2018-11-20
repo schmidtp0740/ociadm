@@ -5,12 +5,12 @@ import (
 )
 
 // DestroyCmd ...
-var DestroyCmd = &cobra.Command{
-	Use:   "destroy",
+var DescribeCmd = &cobra.Command{
+	Use:   "describe",
 	Short: "TODO",
 	Long:  "TODO",
 }
 
 func init() {
-	RootCmd.AddCommand(DestroyCmd)
+	RootCmd.AddCommand(DescribeCmd)
 }

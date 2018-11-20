@@ -4,7 +4,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var createCmd = &cobra.Command{
+// CreateCmd ...
+var CreateCmd = &cobra.Command{
 	Use:   "create",
 	Short: "TODO",
 	Long:  "TODO",
@@ -12,5 +13,5 @@ var createCmd = &cobra.Command{
 
 func init() {
 
-	RootCmd.AddCommand(createCmd)
+	RootCmd.AddCommand(CreateCmd)
 }

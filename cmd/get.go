@@ -4,13 +4,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var createNetworkCmd = &cobra.Command{
-	Use:   "network",
+// GetCmd ...
+var GetCmd = &cobra.Command{
+	Use:   "get",
 	Short: "TODO",
 	Long:  "TODO",
 }
 
 func init() {
 
-	createCmd.AddCommand(createNetworkCmd)
+	RootCmd.AddCommand(GetCmd)
 }
