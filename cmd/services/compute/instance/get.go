@@ -1,4 +1,4 @@
-package cmd
+package instance
 
 import (
 	"context"
@@ -11,31 +11,33 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Get ...
+var GetCmd = &cobra.Command{
+	Use:   "get",
+	Short: "TODO",
+	Long:  "TODO",
+
+	Run: func(cmd *cobra.Command, args []string) {
+
+		// listOfInstances := getInstance(compartmentId, displayName, lifeCycleState, availabilityDomain)
+
+		// fmt.Printf("%-50s%-20s%-20s%-80s\n", "Display Name", "Lifecycle State", "Shape", "OCID")
+		// for _, item := range listOfInstances {
+		// 	fmt.Printf("%-50s%-20s%-20s%-80s\n", *item.DisplayName, item.LifecycleState, *item.Shape, *item.Id)
+		// }
+
+	},
+}
+
 func init() {
-	var compartmentId, displayName, lifeCycleState, availabilityDomain string
+	var compartmentID, displayName, lifeCycleState, availabilityDomain string
 
-	var getInstanceCmd = &cobra.Command{
-		Use:   "instance",
-		Short: "TODO",
-		Long:  "TODO",
+	GetCmd.Flags().StringVarP(&displayName, "name", "n", "", "name of the vcn")
+	GetCmd.Flags().StringVarP(&lifeCycleState, "lifecycle-state", "l", "", "lifecycle state")
+	GetCmd.Flags().StringVarP(&compartmentID, "compartment-id", "i", os.Getenv("TF_VAR_compartment_ocid"), "ocid of compartment")
+	GetCmd.Flags().StringVarP(&availabilityDomain, "availability-domain", "a", "", "availability domain")
 
-		Run: func(cmd *cobra.Command, args []string) {
-
-			listOfInstances := getInstance(compartmentId, displayName, lifeCycleState, availabilityDomain)
-
-			fmt.Printf("%-50s%-20s%-20s%-80s\n", "Display Name", "Lifecycle State", "Shape", "OCID")
-			for _, item := range listOfInstances {
-				fmt.Printf("%-50s%-20s%-20s%-80s\n", *item.DisplayName, item.LifecycleState, *item.Shape, *item.Id)
-			}
-
-		},
-	}
-	getInstanceCmd.Flags().StringVarP(&displayName, "name", "n", "", "name of the vcn")
-	getInstanceCmd.Flags().StringVarP(&lifeCycleState, "lifecycle-state", "l", "", "lifecycle state")
-	getInstanceCmd.Flags().StringVarP(&compartmentId, "compartment-id", "i", os.Getenv("TF_VAR_compartment_ocid"), "ocid of compartment")
-	getInstanceCmd.Flags().StringVarP(&availabilityDomain, "availability-domain", "a", "", "availability domain")
-
-	GetCmd.AddCommand(getInstanceCmd)
+	Cmd.AddCommand(GetCmd)
 }
 
 func getInstance(compartmentId, displayName, lifeCycleState, availabilityDomain string) []core.Instance {

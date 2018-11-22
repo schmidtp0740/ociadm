@@ -1,4 +1,4 @@
-package cmd
+package vcn
 
 import (
 	"context"
@@ -9,24 +9,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func init() {
-	var vcnId string
+// DestroyCmd destroy a vcn instance
+var DestroyCmd = &cobra.Command{
+	Use:   "destroy",
+	Short: "TODO",
+	Long:  "TODO",
+	Run: func(cmd *cobra.Command, args []string) {
 
-	var destroyVcnCmd = &cobra.Command{
-		Use:   "vcn",
-		Short: "TODO",
-		Long:  "TODO",
-		Run: func(cmd *cobra.Command, args []string) {
+		vcnID := args[0]
 
-			destroyVCN(&vcnId)
-		},
-	}
-	destroyVcnCmd.Flags().StringVarP(&vcnId, "vcn-id", "i", "", "OCID of vcn")
-	destroyVcnCmd.MarkFlagRequired("vcn-id")
-	DestroyCmd.AddCommand(destroyVcnCmd)
+		destroyVCN(vcnID)
+	},
 }
 
-func destroyVCN(vcnId *string) core.DeleteVcnResponse {
+func init() {
+	Cmd.AddCommand(DestroyCmd)
+}
+
+func destroyVCN(vcnID string) core.DeleteVcnResponse {
 	configProvider := common.ConfigurationProviderEnvironmentVariables("TF_VAR", "")
 
 	client, err := core.NewVirtualNetworkClientWithConfigurationProvider(configProvider)
@@ -38,7 +38,7 @@ func destroyVCN(vcnId *string) core.DeleteVcnResponse {
 	ctx := context.Background()
 
 	request := core.DeleteVcnRequest{}
-	request.VcnId = vcnId
+	request.VcnId = common.String(vcnID)
 
 	resp, err := client.DeleteVcn(ctx, request)
 	if err != nil {
