@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/schmidtp0740/oci-dev/cmd"
+	"github.com/schmidtp0740/goci/cmd"
 )
 
 func main() {
