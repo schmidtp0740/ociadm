@@ -6,7 +6,6 @@ import (
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/schmidtp0740/goci/cmd/services/compute"
-	"github.com/schmidtp0740/goci/cmd/services/network"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -41,7 +40,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.oci/config)")
 	RootCmd.PersistentFlags().StringP("output", "o", "default", "specify how to output")
 
-	RootCmd.AddCommand(network.Cmd)
+	// RootCmd.AddCommand(network.Cmd)
 	RootCmd.AddCommand(compute.Cmd)
 
 }
