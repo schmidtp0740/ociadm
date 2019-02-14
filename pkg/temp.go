@@ -6,10 +6,12 @@ import (
 
 	"github.com/oracle/oci-go-sdk/common"
 	"github.com/oracle/oci-go-sdk/core"
+	"github.com/oracle/oci-go-sdk/identity"
 	"github.com/spf13/viper"
 )
 
-// GetComputeClientFromViper ...
+// GetComputeClient ...
+// get customer config from viper for compute client
 func GetComputeClient(tenancy, user, region, fingerprint, privateKeyPath string) (core.ComputeClient, error) {
 
 	pemFileContent, err := ioutil.ReadFile(privateKeyPath)
@@ -28,7 +30,21 @@ func GetComputeClient(tenancy, user, region, fingerprint, privateKeyPath string)
 	return client, nil
 }
 
-// GetNetworkClientFromViper ...
+// GetDefaultComputeClient ...
+// use default configuration provider for compute client
+func GetDefaultComputeClient() (core.ComputeClient, error) {
+	configProvider := common.DefaultConfigProvider()
+
+	client, err := core.NewComputeClientWithConfigurationProvider(configProvider)
+	if err != nil {
+		return core.ComputeClient{}, errors.New("Virtual Compute Client Error:" + err.Error())
+	}
+
+	return client, nil
+}
+
+// GetNetworkClient ...
+// use custom config file for network client
 func GetNetworkClient(tenancy, user, region, fingerprint, privateKeyPath string) (core.VirtualNetworkClient, error) {
 
 	pemFileContent, err := ioutil.ReadFile(privateKeyPath)
@@ -42,6 +58,31 @@ func GetNetworkClient(tenancy, user, region, fingerprint, privateKeyPath string)
 	client, err := core.NewVirtualNetworkClientWithConfigurationProvider(configProvider)
 	if err != nil {
 		return core.VirtualNetworkClient{}, errors.New("Vritual Network Client Error:" + err.Error())
+	}
+
+	return client, nil
+}
+
+// GetDefaultNetworkClient ...
+// use default configuration provider for compute client
+func GetDefaultNetworkClient() (core.VirtualNetworkClient, error) {
+	configProvider := common.DefaultConfigProvider()
+
+	client, err := core.NewVirtualNetworkClientWithConfigurationProvider(configProvider)
+	if err != nil {
+		return core.VirtualNetworkClient{}, errors.New("Virtual Network Client Error:" + err.Error())
+	}
+
+	return client, nil
+}
+
+// GetDefaultIdentityClient ...
+func GetDefaultIdentityClient() (identity.IdentityClient, error) {
+	configProvider := common.DefaultConfigProvider()
+
+	client, err := identity.NewIdentityClientWithConfigurationProvider(configProvider)
+	if err != nil {
+		return identity.IdentityClient{}, errors.New("Identity  Client Error:" + err.Error())
 	}
 
 	return client, nil
