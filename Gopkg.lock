@@ -52,7 +52,8 @@
   name = "github.com/oracle/oci-go-sdk"
   packages = [
     "common",
-    "core"
+    "core",
+    "identity"
   ]
   revision = "a2ded717dc4bb4916c0416ec79f81718b576dbc4"
   version = "v1.8.0"
@@ -130,6 +131,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "397dfee5e3a7e5cdd9e37842bf92929540ba16a0eb89f41b5eea7605a70126cd"
+  inputs-digest = "8c90f8d80f5d1af1bbda1a1ddd9c47d898a3310b0744252cdb58f20db89d98c7"
   solver-name = "gps-cdcl"
   solver-version = 1
