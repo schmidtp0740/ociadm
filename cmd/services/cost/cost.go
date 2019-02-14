@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/oracle/oci-go-sdk/core"
+
 	"github.com/oracle/oci-go-sdk/common"
 	"github.com/oracle/oci-go-sdk/identity"
 	"github.com/schmidtp0740/ociadm/pkg"
@@ -22,18 +24,53 @@ var Cmd = &cobra.Command{
 		compartmentID := args[0]
 		fmt.Printf("compartment id used: %s\n", compartmentID)
 
-		listcomparmtentResponse, err := listCompartments(compartmentID)
+		compartments, err := traverseCompartments(compartmentID, []identity.Compartment{})
 		if err != nil {
-			log.Fatal("Error get list of compartments: " + err.Error())
+			log.Fatal(err.Error())
 		}
 
-		for key, compartment := range listcomparmtentResponse.Items {
-			if compartment.LifecycleState == identity.CompartmentLifecycleStateActive {
-				fmt.Printf("%d : %s\n", key, *compartment.Name)
+		sumOfInstances := 0
+		buffer := ""
+		for key, comp := range compartments {
+			buffer += fmt.Sprintf("%d:", key)
+			buffer += fmt.Sprintf("\tName: %s\n", *comp.Name)
+			buffer += fmt.Sprintf("\tID: %s\n", *comp.Id)
 
+			temp, err := getSumOfInstancesInCompartment(*comp.Id)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			sumOfInstances += temp
+			buffer += fmt.Sprintf("\t# of instances: %d\n\n", temp)
+		}
+		fmt.Println(buffer)
+		fmt.Printf("Sum Of Instances: %d\n", sumOfInstances)
+
+	},
+}
+
+func traverseCompartments(compartmentID string, begin []identity.Compartment) ([]identity.Compartment, error) {
+	listComparmtentResponse, err := listCompartments(compartmentID)
+	if err != nil {
+		return nil, errors.New("Error get list of compartments: " + err.Error())
+	}
+
+	if len(listComparmtentResponse.Items) == 0 {
+		return begin, nil
+	}
+
+	for _, compartment := range listComparmtentResponse.Items {
+		if compartment.LifecycleState == identity.CompartmentLifecycleStateActive {
+			begin = append(begin, compartment)
+			begin, err = traverseCompartments(*compartment.Id, begin)
+			if err != nil {
+				return nil, err
 			}
 		}
-	},
+	}
+
+	return begin, nil
 }
 
 // getCompartments ...
@@ -60,5 +97,26 @@ func listCompartments(compartmentID string) (identity.ListCompartmentsResponse, 
 	}
 
 	return response, nil
+
+}
+
+func getSumOfInstancesInCompartment(compID string) (int, error) {
+	client, err := pkg.GetDefaultComputeClient()
+	if err != nil {
+		return 0, err
+	}
+
+	ctx := context.Background()
+
+	request := core.ListInstancesRequest{
+		CompartmentId: common.String(compID),
+	}
+
+	response, err := client.ListInstances(ctx, request)
+	if err != nil {
+		return 0, err
+	}
+
+	return len(response.Items), nil
 
 }
