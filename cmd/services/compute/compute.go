@@ -1,11 +1,11 @@
 package compute
 
 import (
-	"github.com/schmidtp0740/goci/cmd/services/compute/instance"
+	"github.com/schmidtp0740/ociadm/cmd/services/compute/instance"
 	"github.com/spf13/cobra"
 )
 
-// Cmd
+// Cmd ...
 var Cmd = &cobra.Command{
 	Use:   "compute",
 	Short: "TODO",

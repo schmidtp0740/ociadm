@@ -9,7 +9,7 @@ import (
 
 	"github.com/oracle/oci-go-sdk/common"
 	"github.com/oracle/oci-go-sdk/core"
-	"github.com/schmidtp0740/goci/pkg"
+	"github.com/schmidtp0740/ociadm/pkg"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

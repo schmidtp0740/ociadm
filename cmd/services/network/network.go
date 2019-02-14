@@ -1,7 +1,7 @@
 package network
 
 import (
-	"github.com/schmidtp0740/goci/cmd/services/network/vcn"
+	"github.com/schmidtp0740/ociadm/cmd/services/network/vcn"
 	"github.com/spf13/cobra"
 )
 
