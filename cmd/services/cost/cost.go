@@ -4,7 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 
+	"github.com/oracle/oci-go-sdk/common"
+	"github.com/oracle/oci-go-sdk/identity"
 	"github.com/schmidtp0740/ociadm/pkg"
 	"github.com/spf13/cobra"
 )
@@ -19,24 +22,43 @@ var Cmd = &cobra.Command{
 		compartmentID := args[0]
 		fmt.Printf("compartment id used: %s\n", compartmentID)
 
-		listCompartments(compartmentID)
+		listcomparmtentResponse, err := listCompartments(compartmentID)
+		if err != nil {
+			log.Fatal("Error get list of compartments: " + err.Error())
+		}
+
+		for key, compartment := range listcomparmtentResponse.Items {
+			if compartment.LifecycleState == identity.CompartmentLifecycleStateActive {
+				fmt.Printf("%d : %s\n", key, *compartment.Name)
+
+			}
+		}
 	},
 }
 
 // getCompartments ...
 // using parent compartment ocid retreive and
 // traverse child compartments
-func listCompartments(compartmentID string) error {
+func listCompartments(compartmentID string) (identity.ListCompartmentsResponse, error) {
 	// get client
 	client, err := pkg.GetDefaultIdentityClient()
 	if err != nil {
-		return errors.New("Not able to authenticate: " + err.Error())
+		return identity.ListCompartmentsResponse{}, errors.New("Not able to authenticate: " + err.Error())
 	}
 
 	ctx := context.Background()
 
+	request := identity.ListCompartmentsRequest{}
+
+	request.CompartmentId = common.String(compartmentID)
+
 	// get list of compartments using provided ocid
 
-	return nil
+	response, err := client.ListCompartments(ctx, request)
+	if err != nil {
+		return identity.ListCompartmentsResponse{}, err
+	}
+
+	return response, nil
 
 }
