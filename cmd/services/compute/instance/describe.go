@@ -1,146 +1,139 @@
 package instance
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
-
-	"github.com/oracle/oci-go-sdk/common"
-	"github.com/oracle/oci-go-sdk/core"
 	"github.com/spf13/cobra"
 )
 
 // DescribeCmd ...
 var DescribeCmd = &cobra.Command{
-	Use:   "describe",
+	Use:   "describe [instance-id]",
 	Short: "TODO",
 	Long:  "TODO",
 
 	Run: func(cmd *cobra.Command, args []string) {
 
-		instanceID := args[0]
+		// instanceID := args[0]
 
-		instance := getInstanceDetails(instanceID)
+		// instance := getInstanceDetails(instanceID)
 
-		fmt.Printf("Instance Display Name: %s\n", *instance.DisplayName)
-		fmt.Printf("Availability Domain %s\n", *instance.AvailabilityDomain)
-		fmt.Printf("Lifecycle State: %s\n", instance.LifecycleState)
-		fmt.Printf("Compartment OCID: %s\n", *instance.CompartmentId)
-		fmt.Printf("Instace OCID: %s\n", *instance.Id)
-		fmt.Printf("Region: %s\n", *instance.Region)
-		fmt.Printf("Shape: %s\n", *instance.Shape)
-		fmt.Printf("Time Created: %s\n", instance.TimeCreated.String())
-		fmt.Printf("Extended Metadata: %s\n", instance.ExtendedMetadata)
-		//fmt.Printf("Fault Domain: %s\n", *instance.FaultDomain)
-		fmt.Printf("ImageId: %s\n", *instance.ImageId)
-		fmt.Printf("Freeform tage: %s\n", instance.FreeformTags)
-		if instance.IpxeScript != nil {
-			fmt.Printf("Ipxe Script: %s\n", *instance.IpxeScript)
+		// fmt.Printf("Instance Display Name: %s\n", *instance.DisplayName)
+		// fmt.Printf("Availability Domain %s\n", *instance.AvailabilityDomain)
+		// fmt.Printf("Lifecycle State: %s\n", instance.LifecycleState)
+		// fmt.Printf("Compartment OCID: %s\n", *instance.CompartmentId)
+		// fmt.Printf("Instace OCID: %s\n", *instance.Id)
+		// fmt.Printf("Region: %s\n", *instance.Region)
+		// fmt.Printf("Shape: %s\n", *instance.Shape)
+		// fmt.Printf("Time Created: %s\n", instance.TimeCreated.String())
+		// fmt.Printf("Extended Metadata: %s\n", instance.ExtendedMetadata)
+		// //fmt.Printf("Fault Domain: %s\n", *instance.FaultDomain)
+		// fmt.Printf("ImageId: %s\n", *instance.ImageId)
+		// fmt.Printf("Freeform tage: %s\n", instance.FreeformTags)
+		// if instance.IpxeScript != nil {
+		// 	fmt.Printf("Ipxe Script: %s\n", *instance.IpxeScript)
 
-		} else {
-			fmt.Printf("Ipxe Script: %s\n", "")
+		// } else {
+		// 	fmt.Printf("Ipxe Script: %s\n", "")
 
-		}
-		fmt.Printf("Launch Mode: %s\n", instance.LaunchMode)
-		fmt.Printf("Launch Options: %s\n", *instance.LaunchOptions)
-		fmt.Printf("Metadata: %s\n", instance.Metadata)
-		fmt.Printf("Source Details: %s\n", instance.SourceDetails)
+		// }
+		// fmt.Printf("Launch Mode: %s\n", instance.LaunchMode)
+		// fmt.Printf("Launch Options: %s\n", *instance.LaunchOptions)
+		// fmt.Printf("Metadata: %s\n", instance.Metadata)
+		// fmt.Printf("Source Details: %s\n", instance.SourceDetails)
 
-		// send ImageId get name of image
-		image := getImageName(*instance.ImageId)
-		fmt.Printf("Image Name: %s %s\n", *image.OperatingSystem, *image.OperatingSystemVersion)
+		// // send ImageId get name of image
+		// image := getImageName(*instance.ImageId)
+		// fmt.Printf("Image Name: %s %s\n", *image.OperatingSystem, *image.OperatingSystemVersion)
 
-		// get list of vnics attached to instance
-		listOfVnicAttachments := listVnicAttachmentsForInstance(instanceID)
+		// // get list of vnics attached to instance
+		// listOfVnicAttachments := listVnicAttachmentsForInstance(instanceID)
 
-		fmt.Printf("\nVNIC Attachment Details\n")
-		// for each vnic attachment
-		for _, vnicAttachment := range listOfVnicAttachments {
-			// print the details of the vnic attachment
-			// display name of vnic
-			if vnicAttachment.DisplayName != nil {
-				fmt.Printf("Display Name: %s\n", *vnicAttachment.DisplayName)
-			} else {
-				fmt.Printf("Display Name: %s\n", "")
-			}
+		// fmt.Printf("\nVNIC Attachment Details\n")
+		// // for each vnic attachment
+		// for _, vnicAttachment := range listOfVnicAttachments {
+		// 	// print the details of the vnic attachment
+		// 	// display name of vnic
+		// 	if vnicAttachment.DisplayName != nil {
+		// 		fmt.Printf("Display Name: %s\n", *vnicAttachment.DisplayName)
+		// 	} else {
+		// 		fmt.Printf("Display Name: %s\n", "")
+		// 	}
 
-			// availability domain
-			fmt.Printf("Availability Domain: %s\n", *vnicAttachment.AvailabilityDomain)
+		// 	// availability domain
+		// 	fmt.Printf("Availability Domain: %s\n", *vnicAttachment.AvailabilityDomain)
 
-			// compartment OCID
-			fmt.Printf("Compartment OCID: %s\n", *vnicAttachment.CompartmentId)
+		// 	// compartment OCID
+		// 	fmt.Printf("Compartment OCID: %s\n", *vnicAttachment.CompartmentId)
 
-			// OCID of vnic attachement
-			fmt.Printf("VNIC Attachment OCID: %s\n", *vnicAttachment.Id)
+		// 	// OCID of vnic attachement
+		// 	fmt.Printf("VNIC Attachment OCID: %s\n", *vnicAttachment.Id)
 
-			// lifecycle state of vnic attachment
-			fmt.Printf("Life Cycle State: %s\n", vnicAttachment.LifecycleState)
+		// 	// lifecycle state of vnic attachment
+		// 	fmt.Printf("Life Cycle State: %s\n", vnicAttachment.LifecycleState)
 
-			// OCID of subnet
-			fmt.Printf("Subnet OCID: %s\n", *vnicAttachment.SubnetId)
+		// 	// OCID of subnet
+		// 	fmt.Printf("Subnet OCID: %s\n", *vnicAttachment.SubnetId)
 
-			// timecreated vnic attachment
-			fmt.Printf("Time Created: %s\n", *vnicAttachment.TimeCreated)
+		// 	// timecreated vnic attachment
+		// 	fmt.Printf("Time Created: %s\n", *vnicAttachment.TimeCreated)
 
-			// nic index
-			fmt.Printf("NIC Index: %d\n", *vnicAttachment.NicIndex)
+		// 	// nic index
+		// 	fmt.Printf("NIC Index: %d\n", *vnicAttachment.NicIndex)
 
-			// vlan tag
-			fmt.Printf("VLAN Tag: %d\n", *vnicAttachment.VlanTag)
+		// 	// vlan tag
+		// 	fmt.Printf("VLAN Tag: %d\n", *vnicAttachment.VlanTag)
 
-			// get details of vnic
-			fmt.Printf("\nVNIC Details\n")
+		// 	// get details of vnic
+		// 	fmt.Printf("\nVNIC Details\n")
 
-			vnic := getVnicDetails(*vnicAttachment.VnicId)
+		// 	vnic := getVnicDetails(*vnicAttachment.VnicId)
 
-			// print details of vnic
-			// OCID of vnic
-			fmt.Printf("VLAN: %s\n", *vnic.Id)
+		// 	// print details of vnic
+		// 	// OCID of vnic
+		// 	fmt.Printf("VLAN: %s\n", *vnic.Id)
 
-			// availability domain
-			fmt.Printf("Availability Domain: %s\n", *vnic.AvailabilityDomain)
+		// 	// availability domain
+		// 	fmt.Printf("Availability Domain: %s\n", *vnic.AvailabilityDomain)
 
-			// compartment OCID
-			fmt.Printf("Compartment OCID: %s\n", *vnic.CompartmentId)
+		// 	// compartment OCID
+		// 	fmt.Printf("Compartment OCID: %s\n", *vnic.CompartmentId)
 
-			// lifecycle state of vnic
-			fmt.Printf("Lifecycle State: %s\n", vnic.LifecycleState)
+		// 	// lifecycle state of vnic
+		// 	fmt.Printf("Lifecycle State: %s\n", vnic.LifecycleState)
 
-			// private ip
-			fmt.Printf("Private IP Address: %s\n", *vnic.PrivateIp)
+		// 	// private ip
+		// 	fmt.Printf("Private IP Address: %s\n", *vnic.PrivateIp)
 
-			// OCID of subnet
-			fmt.Printf("Subnet OCID: %s\n", *vnic.SubnetId)
+		// 	// OCID of subnet
+		// 	fmt.Printf("Subnet OCID: %s\n", *vnic.SubnetId)
 
-			// time created vnic
-			fmt.Printf("Time Created: %s\n", *vnic.TimeCreated)
+		// 	// time created vnic
+		// 	fmt.Printf("Time Created: %s\n", *vnic.TimeCreated)
 
-			// defined tags
-			fmt.Printf("Defined Tags: %s\n", vnic.DefinedTags)
+		// 	// defined tags
+		// 	fmt.Printf("Defined Tags: %s\n", vnic.DefinedTags)
 
-			// display name of vnic
-			fmt.Printf("Display Name: %s\n", *vnic.DisplayName)
+		// 	// display name of vnic
+		// 	fmt.Printf("Display Name: %s\n", *vnic.DisplayName)
 
-			// freeform tags
-			fmt.Printf("Freeform Tags: %s\n", vnic.FreeformTags)
+		// 	// freeform tags
+		// 	fmt.Printf("Freeform Tags: %s\n", vnic.FreeformTags)
 
-			// Hostname label
-			fmt.Printf("Hosname Label: %s\n", *vnic.HostnameLabel)
+		// 	// Hostname label
+		// 	fmt.Printf("Hosname Label: %s\n", *vnic.HostnameLabel)
 
-			// is the Vnic the primary vnic
-			fmt.Printf("Is Primary Vnic: %t\n", *vnic.IsPrimary)
+		// 	// is the Vnic the primary vnic
+		// 	fmt.Printf("Is Primary Vnic: %t\n", *vnic.IsPrimary)
 
-			// MacAddress
-			fmt.Printf("MAC Address: %s\n", *vnic.MacAddress)
+		// 	// MacAddress
+		// 	fmt.Printf("MAC Address: %s\n", *vnic.MacAddress)
 
-			// Public Ip
-			fmt.Printf("Public IP Address: %s\n", *vnic.PublicIp)
+		// 	// Public Ip
+		// 	fmt.Printf("Public IP Address: %s\n", *vnic.PublicIp)
 
-			// Skip Source Destination check
-			fmt.Printf("Skip Source Destination Check: %t\n", *vnic.SkipSourceDestCheck)
+		// 	// Skip Source Destination check
+		// 	fmt.Printf("Skip Source Destination Check: %t\n", *vnic.SkipSourceDestCheck)
 
-		}
+		// }
 
 		// get block volumes attached
 
@@ -157,114 +150,152 @@ var DescribeCmd = &cobra.Command{
 }
 
 func init() {
-	var compOCID, instanceID string
+	DescribeCmd.Flags().StringP("instanceOCID", "i", "", "OCID of instance")
 
-	DescribeCmd.Flags().StringVarP(&instanceID, "instanceOCID", "i", "", "OCID of instance")
-	DescribeCmd.Flags().StringVarP(&compOCID, "compartment-id", "c", os.Getenv("TF_VAR_compartment_ocid"), "ocid of compartment")
+	Cmd.AddCommand(DescribeCmd)
 }
 
-func getInstanceDetails(instanceID string) core.Instance {
-	configProvider := common.ConfigurationProviderEnvironmentVariables("TF_VAR", "")
+// func getDescribeInstanceRequestFromArgs(cmd *cobra.Command, args []string) (request core.GetInstanceRequest, err error) {
 
-	client, err := core.NewComputeClientWithConfigurationProvider(configProvider)
-	if err != nil {
-		fmt.Print("Error: ")
-		panic(err)
-	}
+// 	instanceID := args[0]
+// 	if err != nil {
+// 		return core.GetInstanceRequest{}, err
+// 	}
 
-	ctx := context.Background()
+// 	request.InstanceId = common.String(instanceID)
 
-	request := core.GetInstanceRequest{}
+// 	return request, nil
+// }
 
-	request.InstanceId = &instanceID
+// func getInstanceDetails(instanceID string) core.Instance {
+// 	configProvider := common.ConfigurationProviderEnvironmentVariables("TF_VAR", "")
 
-	response, err := client.GetInstance(ctx, request)
-	if err != nil {
-		fmt.Println("error at get instances")
-		panic(err)
-	}
-	return response.Instance
-}
+// 	client, err := core.NewComputeClientWithConfigurationProvider(configProvider)
+// 	if err != nil {
+// 		fmt.Print("Error: ")
+// 		panic(err)
+// 	}
 
-func listVnicAttachmentsForInstance(instanceID string) []core.VnicAttachment {
+// 	ctx := context.Background()
 
-	configProvider := common.ConfigurationProviderEnvironmentVariables("TF_VAR", "")
+// 	request := core.GetInstanceRequest{}
 
-	client, err := core.NewComputeClientWithConfigurationProvider(configProvider)
-	if err != nil {
-		fmt.Print("Error: ")
-		panic(err)
-	}
+// 	request.InstanceId = &instanceID
 
-	ctx := context.Background()
+// 	response, err := client.GetInstance(ctx, request)
+// 	if err != nil {
+// 		fmt.Println("error at get instances")
+// 		panic(err)
+// 	}
+// 	return response.Instance
+// }
 
-	request := core.ListVnicAttachmentsRequest{}
+// func listVnicAttachmentsForInstance(instanceID string) []core.VnicAttachment {
 
-	// request.CompartmentId = &compOCID
-	request.InstanceId = &instanceID
+// 	configProvider := common.ConfigurationProviderEnvironmentVariables("TF_VAR", "")
 
-	response, err := client.ListVnicAttachments(ctx, request)
-	if err != nil {
-		log.Fatal(err)
-	}
+// 	client, err := core.NewComputeClientWithConfigurationProvider(configProvider)
+// 	if err != nil {
+// 		fmt.Print("Error: ")
+// 		panic(err)
+// 	}
 
-	return response.Items
-}
+// 	ctx := context.Background()
 
-func getVnicDetails(VnicOCID string) core.Vnic {
-	configProvider := common.ConfigurationProviderEnvironmentVariables("TF_VAR", "")
+// 	request := core.ListVnicAttachmentsRequest{}
 
-	client, err := core.NewVirtualNetworkClientWithConfigurationProvider(configProvider)
-	if err != nil {
-		fmt.Print("Error: ")
-		panic(err)
-	}
+// 	// request.CompartmentId = &compOCID
+// 	request.InstanceId = &instanceID
 
-	ctx := context.Background()
+// 	response, err := client.ListVnicAttachments(ctx, request)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
 
-	request := core.GetVnicRequest{}
+// 	return response.Items
+// }
 
-	request.VnicId = &VnicOCID
+// func getVnicDetails(VnicOCID string) core.Vnic {
+// 	configProvider := common.ConfigurationProviderEnvironmentVariables("TF_VAR", "")
 
-	response, err := client.GetVnic(ctx, request)
-	if err != nil {
-		fmt.Println("error at get instances")
-		panic(err)
-	}
+// 	client, err := core.NewVirtualNetworkClientWithConfigurationProvider(configProvider)
+// 	if err != nil {
+// 		fmt.Print("Error: ")
+// 		panic(err)
+// 	}
 
-	return response.Vnic
+// 	ctx := context.Background()
 
-}
+// 	request := core.GetVnicRequest{}
 
-func listBlockVolumeAttachmentsForInstance(instanceID string) {
+// 	request.VnicId = &VnicOCID
 
-}
+// 	response, err := client.GetVnic(ctx, request)
+// 	if err != nil {
+// 		fmt.Println("error at get instances")
+// 		panic(err)
+// 	}
 
-func getBlockVolumeDetails() {
+// 	return response.Vnic
 
-}
+// }
 
-func getImageName(imageID string) core.Image {
-	configProvider := common.ConfigurationProviderEnvironmentVariables("TF_VAR", "")
+// func listBlockVolumeAttachmentsForInstance(instanceID string) {
 
-	client, err := core.NewComputeClientWithConfigurationProvider(configProvider)
-	if err != nil {
-		fmt.Print("Error: ")
-		panic(err)
-	}
+// }
 
-	ctx := context.Background()
+// func getBlockVolumeDetails() {
 
-	request := core.GetImageRequest{}
+// }
 
-	request.ImageId = &imageID
+// func getImageName(imageID string) core.Image {
+// 	configProvider := common.ConfigurationProviderEnvironmentVariables("TF_VAR", "")
 
-	response, err := client.GetImage(ctx, request)
-	if err != nil {
-		fmt.Println("error at get instances")
-		panic(err)
-	}
+// 	client, err := core.NewComputeClientWithConfigurationProvider(configProvider)
+// 	if err != nil {
+// 		fmt.Print("Error: ")
+// 		panic(err)
+// 	}
 
-	return response.Image
+// 	ctx := context.Background()
 
-}
+// 	request := core.GetImageRequest{}
+
+// 	request.ImageId = &imageID
+
+// 	response, err := client.GetImage(ctx, request)
+// 	if err != nil {
+// 		fmt.Println("error at get instances")
+// 		panic(err)
+// 	}
+
+// 	return response.Image
+
+// }
+
+// // func outputDescribeInstanceResponse(output string, response AllInstanceDetails) {
+// // 	if output == "json" {
+// // 		var prettyJSON bytes.Buffer
+// // 		res := struct {
+// // 			Data core.Instance `json:"data"`
+// // 			Etag string        `json:"etag"`
+// // 		}{
+// // 			Data: response.Instance,
+// // 			Etag: *response.Etag,
+// // 		}
+// // 		responseAsBytes, err := json.Marshal(res)
+// // 		if err != nil {
+// // 			fmt.Println(err.Error())
+// // 			return
+// // 		}
+// // 		err = json.Indent(&prettyJSON, responseAsBytes, "", "  ")
+// // 		if err != nil {
+// // 			fmt.Println(err.Error())
+// // 			return
+// // 		}
+// // 		fmt.Printf("%s\n", string(prettyJSON.Bytes()))
+
+// // 	} else {
+
+// // 	}
+// // }

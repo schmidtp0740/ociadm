@@ -7,11 +7,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/spf13/viper"
-
 	"github.com/oracle/oci-go-sdk/common"
 	"github.com/oracle/oci-go-sdk/core"
+	"github.com/schmidtp0740/goci/pkg"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // ListCmd ...
@@ -60,7 +60,13 @@ func init() {
 
 func getListOfVcn(request core.ListVcnsRequest) (core.ListVcnsResponse, error) {
 
-	client, err := GetNetworkClientFromViper()
+	tenancy := viper.GetString("default.tenancy")
+	user := viper.GetString("default.user")
+	region := viper.GetString("default.region")
+	fingerprint := viper.GetString("default.fingerprint")
+	privateKeyPath := viper.GetString("default.key_file")
+
+	client, err := pkg.GetNetworkClient(tenancy, user, region, fingerprint, privateKeyPath)
 	if err != nil {
 		return core.ListVcnsResponse{}, err
 	}
