@@ -31,7 +31,10 @@ var Cmd = &cobra.Command{
 
 		sumOfInstances := 0
 		buffer := ""
+		totalSumOfShapesInTenant := map[string]int{}
 		for key, comp := range compartments {
+			sumOfShapesInCompartment := map[string]int{}
+
 			buffer += fmt.Sprintf("%d:", key)
 			buffer += fmt.Sprintf("\tName: %s\n", *comp.Name)
 
@@ -44,14 +47,32 @@ var Cmd = &cobra.Command{
 			}
 
 			for _, instance := range instancesInCompartment {
-				buffer += fmt.Sprintf("Shape: %s", *instance.Shape)
+				// buffer += fmt.Sprintf("\tShape: %s\n", *instance.Shape)
+				totalSumOfShapesInTenant[*instance.Shape]++
+				sumOfShapesInCompartment[*instance.Shape]++
+			}
+
+			for key, value := range sumOfShapesInCompartment {
+				if value != 0 {
+					buffer += fmt.Sprintf("\tTotal %s: %d\n", key, value)
+				}
 			}
 
 			sumOfInstances += len(instancesInCompartment)
 			buffer += fmt.Sprintf("\t# of instances: %d\n\n", len(instancesInCompartment))
+			fmt.Println(buffer)
+			buffer = ""
 		}
-		fmt.Println(buffer)
+
+		fmt.Println("---")
 		fmt.Printf("Sum Of Instances: %d\n", sumOfInstances)
+		fmt.Println("---")
+		fmt.Println("Sum of Each Shape")
+		for key, value := range totalSumOfShapesInTenant {
+			if value != 0 {
+				fmt.Printf("%s: %d\n", key, value)
+			}
+		}
 
 	},
 }
