@@ -14,6 +14,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var shapeCosts = map[string]float32{
+	"VM.Standard1.1":  0,
+	"VM.Standard1.2":  0,
+	"VM.Standard2.1":  0.0638,
+	"VM.Standard2.2":  0.0638 * 2,
+	"VM.Standard2.4":  0.0638 * 4,
+	"VM.Standard2.8":  0.0638 * 8,
+	"VM.Standard2.24": 0.0638 * 24,
+	"BM.GPU2.2":       1.275 * 2,
+}
+
 // Cmd ...
 // cobra command details to get report of usage in compartment
 var Cmd = &cobra.Command{
@@ -68,11 +79,14 @@ var Cmd = &cobra.Command{
 		fmt.Printf("Sum Of Instances: %d\n", sumOfInstances)
 		fmt.Println("---")
 		fmt.Println("Sum of Each Shape")
+		var sumPerHour float32
 		for key, value := range totalSumOfShapesInTenant {
 			if value != 0 {
 				fmt.Printf("%s: %d\n", key, value)
+				sumPerHour += shapeCosts[key] * float32(value)
 			}
 		}
+		fmt.Printf("Total Cost per Hour: %f\n", sumPerHour)
 
 	},
 }
