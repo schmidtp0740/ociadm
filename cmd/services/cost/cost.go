@@ -34,7 +34,9 @@ var Cmd = &cobra.Command{
 		for key, comp := range compartments {
 			buffer += fmt.Sprintf("%d:", key)
 			buffer += fmt.Sprintf("\tName: %s\n", *comp.Name)
-			buffer += fmt.Sprintf("\tID: %s\n", *comp.Id)
+
+			// Print compartment ID to buffer
+			// buffer += fmt.Sprintf("\tID: %s\n", *comp.Id)
 
 			temp, err := getSumOfInstancesInCompartment(*comp.Id)
 			if err != nil {
