@@ -43,6 +43,10 @@ var Cmd = &cobra.Command{
 				log.Fatal(err)
 			}
 
+			for _, instance := range instancesInCompartment {
+				buffer += fmt.Sprintf("Shape: %s", *instance.Shape)
+			}
+
 			sumOfInstances += len(instancesInCompartment)
 			buffer += fmt.Sprintf("\t# of instances: %d\n\n", len(instancesInCompartment))
 		}
