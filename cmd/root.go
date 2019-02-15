@@ -6,6 +6,7 @@ import (
 
 	homedir "github.com/mitchellh/go-homedir"
 
+	"github.com/schmidtp0740/ociadm/cmd/services/compute"
 	"github.com/schmidtp0740/ociadm/cmd/services/cost"
 
 	"github.com/spf13/cobra"
@@ -16,7 +17,7 @@ var cfgFile string
 
 // RootCmd ...
 var RootCmd = &cobra.Command{
-	Use:   "goci",
+	Use:   "ociadm",
 	Short: "TODO",
 	Long:  "TODO",
 	// Uncomment the following line if your bare application
@@ -43,7 +44,7 @@ func init() {
 	RootCmd.PersistentFlags().StringP("output", "o", "default", "specify how to output")
 
 	// RootCmd.AddCommand(network.Cmd)
-	// RootCmd.AddCommand(compute.Cmd)
+	RootCmd.AddCommand(compute.Cmd)
 	RootCmd.AddCommand(cost.Cmd)
 
 }
