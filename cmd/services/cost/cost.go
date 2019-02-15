@@ -38,13 +38,13 @@ var Cmd = &cobra.Command{
 			// Print compartment ID to buffer
 			// buffer += fmt.Sprintf("\tID: %s\n", *comp.Id)
 
-			temp, err := getSumOfInstancesInCompartment(*comp.Id)
+			instancesInCompartment, err := getInstancesInCompartment(*comp.Id)
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			sumOfInstances += temp
-			buffer += fmt.Sprintf("\t# of instances: %d\n\n", temp)
+			sumOfInstances += len(instancesInCompartment)
+			buffer += fmt.Sprintf("\t# of instances: %d\n\n", len(instancesInCompartment))
 		}
 		fmt.Println(buffer)
 		fmt.Printf("Sum Of Instances: %d\n", sumOfInstances)
@@ -102,10 +102,10 @@ func listCompartments(compartmentID string) (identity.ListCompartmentsResponse, 
 
 }
 
-func getSumOfInstancesInCompartment(compID string) (int, error) {
+func getInstancesInCompartment(compID string) ([]core.Instance, error) {
 	client, err := pkg.GetDefaultComputeClient()
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	ctx := context.Background()
@@ -116,9 +116,9 @@ func getSumOfInstancesInCompartment(compID string) (int, error) {
 
 	response, err := client.ListInstances(ctx, request)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return len(response.Items), nil
+	return response.Items, nil
 
 }
